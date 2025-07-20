@@ -1,0 +1,23 @@
+numpy
+Flask
+langchain
+langchain-community
+langchain-openai
+langchain-groq
+chromadb
+PyPDF2
+pdfplumber
+python-dotenv
+sentence-transformers
+huggingface-hub
+transformers
+torch
+Jinja2
+requests
+Werkzeug
+urllib3
+charset-normalizer
+idna
+certifi
+
+-e .
