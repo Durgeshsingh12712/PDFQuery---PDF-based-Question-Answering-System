@@ -2,6 +2,7 @@ numpy
 Flask
 langchain
 langchain-community
+langchain-pinecone
 langchain-openai
 langchain-groq
 chromadb
