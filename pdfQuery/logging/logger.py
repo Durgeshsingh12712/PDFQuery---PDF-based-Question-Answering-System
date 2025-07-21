@@ -1,32 +1,32 @@
 import logging
+from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from pathlib import Path
 
+
 class LoggerConfig:
     """Enhanced Logger Configuration with rotation and multiple handlers."""
-    
-    def __init__(self, logger_name="PDFQueryLogger", log_level=logging.DEBUG):
 
+    def __init__(self, logger_name="PDFQueryLogger", log_level=logging.DEBUG, log_dir=None):
         self.logger_name = logger_name
         self.log_level = log_level
-        self.log_dir = Path.cwd() / "logs"
+        self.log_dir = Path(log_dir) if log_dir else Path.cwd() / "logs"
         self.setup_directories()
         self.logger = self.setup_logger()
 
-
     def setup_directories(self):
-        """Create Log Directory Structure."""
-        self.log_dir.mkdir(exist_ok=True)
+        """Create log directory if it doesn't exist."""
+        self.log_dir.mkdir(parents=True, exist_ok=True)
 
     def setup_logger(self):
-        """Configure Logger with file rotation and console output."""
+        """Configure logger with rotating file and console handlers."""
         logger = logging.getLogger(self.logger_name)
         logger.setLevel(self.log_level)
-
         logger.handlers.clear()
+        logger.propagate = False
 
-        log_filename = f"{datetime.now().strftime('%d_%m_%Y_%H_%M_%S')}.log"
-        file_handler = logging.handlers.RotatingFileHandler(
+        log_filename = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log"
+        file_handler = RotatingFileHandler(
             filename=self.log_dir / log_filename,
             maxBytes=10 * 1024 * 1024,
             backupCount=10,
@@ -39,10 +39,7 @@ class LoggerConfig:
             '%(asctime)s | %(name)s | %(levelname)-8s | %(filename)s:%(lineno)d | %(funcName)s() | %(message)s',
             datefmt='%d-%m-%Y %H:%M:%S'
         )
-
-        console_formatter = logging.Formatter(
-            '%(levelname)-8s | %(message)s'
-        )
+        console_formatter = logging.Formatter('%(levelname)-8s | %(message)s')
 
         file_handler.setFormatter(file_formatter)
         console_handler.setFormatter(console_formatter)
@@ -54,15 +51,15 @@ class LoggerConfig:
         logger.addHandler(console_handler)
 
         return logger
-    
+
     def get_logger(self):
-        """Get COnfigured Logger Instance."""
+        """Get configured logger instance."""
         return self.logger
-    
-    def log_exception(self, msg="An Error Occurred"):
-        """Log exception with full trackback."""
+
+    def log_exception(self, msg="An error occurred"):
+        """Log exception with traceback."""
         self.logger.exception(msg)
-    
+
     def log_performance(self, func_name, execution_time):
         """Log performance metrics."""
         self.logger.info(f"PERFORMANCE | {func_name} executed in {execution_time:.4f}s")

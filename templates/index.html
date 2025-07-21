@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDFQuery - Chat with your documents</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <style></style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">
+                    <i class="fas fa-file-pdf"></i> PDFQuery
+                </h2>
+                <button class="new-chat-btn" onclick="clearSession()">
+                    <i class="fas fa-plus"></i>
+                    New Chat
+                </button>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="upload-section">
+                    <div class="upload-title">
+                        <i class="fas fa-upload"></i> Upload Documents
+                    </div>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">Drop files here or click to browse</div>
+                        <div class="upload-text" style="opacity: 0.7;">PDF, TXT • Max 20MB</div>
+                        <input type="file" id="fileInput" accept=".pdf,.txt" multiple style="display: none;">
+                    </div>
+                    <div id="fileStatus"></div>
+                </div>
+
+                <div class="chat-history">
+                    <div class="history-title">Recent Conversations</div>
+                    <div id="historyList">
+                        <!-- History items will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="clear-btn" onclick="clearSession()">
+                    <i class="fas fa-trash"></i> Clear Session
+                </button>
+            </div>
+        </div>
+
+        <!-- Main chat area -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">Chat with your documents</div>
+                <button class="btn btn-sm btn-outline-secondary d-md-none" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="empty-title">Start a conversation</div>
+                    <div class="empty-subtitle">Upload your documents and ask questions about them</div>
+                    <div class="quick-actions">
+                        <div class="quick-action" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-upload"></i> Upload Document
+                        </div>
+                        <div class="quick-action" onclick="showSampleQuestions()">
+                            <i class="fas fa-lightbulb"></i> Sample Questions
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        class="message-input" 
+                        id="messageInput" 
+                        placeholder="Message PDFQuery..."
+                        rows="1"
+                        disabled
+                    ></textarea>
+                    <button class="send-button" id="sendButton" onclick="sendMessage()" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div id="inputStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/js/script.js"></script>
+</body>
+</html>

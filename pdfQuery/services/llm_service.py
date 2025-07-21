@@ -11,7 +11,7 @@ class LLMService:
         self.vector_store = vector_store
         # self.llm = OPENAI(
         #     model="gpt-4o",
-        #     temperature=0.0,
+        #     temperature=0.7,
         #     max_tokens=1000,
         #     api_key=Config.OPENAI_API_KEY
         # )
@@ -42,7 +42,7 @@ class LLMService:
             Please provide a clear, concise answer based on the context above:""",
             input_variables=["context", "question"]
         )
-
+        
         self.chain = ConversationalRetrievalChain.from_llm(
             llm = self.llm,
             retriever = self.vector_store.vector_store.as_retriever(
@@ -50,8 +50,7 @@ class LLMService:
                 search_kwargs={"k": 4}
             ),
             memory=self.memory,
-            return_source_documents=True,
-            vector_store=True
+            return_source_documents=True
         )
     
     def get_response(self, query):

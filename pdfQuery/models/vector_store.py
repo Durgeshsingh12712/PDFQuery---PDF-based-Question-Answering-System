@@ -1,5 +1,5 @@
 import os, shutil, chromadb
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from config import Config
 # from langchain_pinecone import PineconeVectorStore
@@ -7,7 +7,7 @@ from config import Config
 # from langchain_openai import OpenAIEmbeddings
 
 class VectorStore:
-    def __init__(self, path, index_name, namespace=None):
+    def __init__(self, path):
         self.path = path
         # self.embeddings = OpenAIEmbeddings(
         #     model="text-embedding-3-small",
@@ -23,7 +23,6 @@ class VectorStore:
 
     def add_documents(self, documents):
         self.vector_store.add_documents(documents)
-        self.vector_store.persist()
     
     def similarity_search(self, query, k=4):
         """Search for similar documents"""
