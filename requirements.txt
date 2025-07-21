@@ -6,6 +6,7 @@ langchain-pinecone
 langchain-openai
 langchain-groq
 chromadb
+pinecone
 PyPDF2
 pdfplumber
 python-dotenv
