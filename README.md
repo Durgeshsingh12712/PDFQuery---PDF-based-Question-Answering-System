@@ -130,7 +130,7 @@ PDFQuery---PDF-based-Question-Answering-System/
 ## API Endpoints
 
 - `GET /` - Main application page
-- `POST /upload` - Upload and process documents
+- `POST /upload` - Upload and process documents 
 - `POST /query` - Ask questions about uploaded documents
 - `GET /history` - Retrieve Q&A history
 - `POST /clear` - Clear session and vector store
@@ -140,6 +140,7 @@ PDFQuery---PDF-based-Question-Answering-System/
 The application can be configured through environment variables:
 
 - `OPENAI_API_KEY` - OpenAI API key (required)
+- `PINECONE_API_KEY` - Pinecone Api Key (on web optional)
 - `GROQ_API_KEY` - Your Groq API key (optional alternative)
 - `FLASK_ENV` - Flask environment (development/production)
 - `FLASK_SECRET_KEY` - Flask session secret key
