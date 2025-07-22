@@ -140,7 +140,7 @@ PDFQuery---PDF-based-Question-Answering-System/
 The application can be configured through environment variables:
 
 - `OPENAI_API_KEY` - OpenAI API key (required)
-- `PINECONE_API_KEY` - Pinecone Api Key (on web optional)
+- `PINECONE_API_KEY` - Pinecone Api Key (optional)
 - `GROQ_API_KEY` - Your Groq API key (optional alternative)
 - `FLASK_ENV` - Flask environment (development/production)
 - `FLASK_SECRET_KEY` - Flask session secret key
