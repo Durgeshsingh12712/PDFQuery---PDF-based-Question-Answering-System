@@ -1,7 +1,5 @@
 # PDFQuery---PDF-based-Question-Answering-System
 
-# PDFQuery - PDF-based Question Answering System
-
 A Flask-based web application that allows users to upload PDF documents and ask questions about their content using Retrieval-Augmented Generation (RAG) with LangChain and OPENAI API.
 
 ## Features
