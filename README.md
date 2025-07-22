@@ -217,4 +217,4 @@ For issues and questions:
 - Integration with other LLM providers
 
 ## **CICD**
-![My Image](https://github.com/Durgeshsingh12712/Data-All/blob/main/pdfquery/Homepage.png)
+![My Image](https://github.com/Durgeshsingh12712/Data-All/blob/main/pdfquery/CICD.png)
