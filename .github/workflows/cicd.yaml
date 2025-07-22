@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -30,11 +30,13 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
-          IMAGE_TAG: latest
+          IMAGE_TAG: ${{ github.sha }}
         run: |
+          echo "Building image: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "Image pushed: $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
   
   Continuous-Deployment:
     needs: Continuous-Integration
@@ -44,7 +46,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -54,12 +56,35 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       
-      - name: Pull and run Docker Image
+      - name: Deploy Application
+        env:
+          IMAGE_URI: ${{ needs.Continuous-Integration.outputs.image }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
         run: |
-          docker pull ${{ needs.Continuous-Integration.outputs.image }}
-          docker stop app-container || true
-          docker rm app-container || true
+          # Debug information
+          echo "Expected image URI: $IMAGE_URI"
+          echo "ECR Registry: $ECR_REGISTRY"
+          echo "ECR Repository: $ECR_REPOSITORY"
+          
+          # Use fallback if image URI is empty
+          if [ -z "$IMAGE_URI" ]; then
+            IMAGE_URI="$ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}"
+            echo "Using fallback image URI: $IMAGE_URI"
+          fi
+          
+          # Pull the image
+          echo "Pulling image: $IMAGE_URI"
+          docker pull $IMAGE_URI
+          
+          # Stop and remove existing container
+          docker stop app-container 2>/dev/null || true
+          docker rm app-container 2>/dev/null || true
+          
+          # Run new container
+          echo "Starting new container..."
           docker run -d --name app-container \
+            --restart unless-stopped \
             -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
             -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
             -e AWS_DEFAULT_REGION="${{ secrets.AWS_REGION }}" \
@@ -67,4 +92,7 @@ jobs:
             -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" \
             -e GROQ_API_KEY="${{ secrets.GROQ_API_KEY }}" \
             -p 8080:8080 \
-            ${{ needs.Continuous-Integration.outputs.image }}
+            $IMAGE_URI
+          
+          echo "Deployment completed successfully!"
+          docker ps | grep app-container
