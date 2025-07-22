@@ -1,20 +1,21 @@
 import os, shutil, chromadb
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from config import Config
+#from langchain_huggingface import HuggingFaceEmbeddings
 # from langchain_pinecone import PineconeVectorStore
 # from pinecone import Pinecone, ServerlessSpec
-# from langchain_openai import OpenAIEmbeddings
+
 
 class VectorStore:
     def __init__(self, path):
         self.path = path
-        # self.embeddings = OpenAIEmbeddings(
-        #     model="text-embedding-3-small",
-        #     openai_api_key=Config.OPENAI_API_KEY
-        # )
+        self.embeddings = OpenAIEmbeddings(
+            model="text-embedding-3-small",
+            openai_api_key=Config.OPENAI_API_KEY
+        )
 
-        self.embeddings = HuggingFaceEmbeddings()
+        # self.embeddings = HuggingFaceEmbeddings()
         
         self.vector_store = Chroma(
             persist_directory=path,

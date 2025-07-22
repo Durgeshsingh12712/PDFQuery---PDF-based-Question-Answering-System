@@ -1,5 +1,5 @@
-# from langchain_openai import OpenAI
-from langchain_groq import ChatGroq
+# from langchain_groq import ChatGroq
+from langchain_openai import OpenAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
@@ -9,18 +9,18 @@ from pdfQuery.logging import logger
 class LLMService:
     def __init__(self, vector_store):
         self.vector_store = vector_store
-        # self.llm = OPENAI(
-        #     model="gpt-4o",
-        #     temperature=0.7,
-        #     max_tokens=1000,
-        #     api_key=Config.OPENAI_API_KEY
-        # )
-
-        self.llm = ChatGroq(
-            model_name = "llama3-8b-8192",
+        self.llm = OpenAI(
+            model="gpt-4o",
             temperature=0.7,
-            groq_api_key=Config.GROQ_API_KEY,
+            max_tokens=1000,
+            api_key=Config.OPENAI_API_KEY
         )
+
+        # self.llm = ChatGroq(
+        #     model_name = "llama3-8b-8192",
+        #     temperature=0.7,
+        #     groq_api_key=Config.GROQ_API_KEY,
+        # )
 
         self.memory = ConversationBufferMemory(
             memory_key="chat_history",

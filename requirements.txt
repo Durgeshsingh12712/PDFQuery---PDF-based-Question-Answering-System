@@ -10,8 +10,6 @@ langchain-groq
 chromadb
 pinecone
 PyYAML
-PyPDF2
-pdfplumber
 python-dotenv
 sentence-transformers
 transformers

@@ -2,6 +2,12 @@
 
 A Flask-based web application that allows users to upload PDF documents and ask questions about their content using Retrieval-Augmented Generation (RAG) with LangChain and OPENAI API.
 
+## **Homepage**
+![My Image](https://github.com/Durgeshsingh12712/Data-All/blob/main/pdfquery/Homepage.png)
+
+## **Demo**
+[![PDFQuery Demo - PDF Question Answering with AI](https://img.youtube.com/vi/dwjgm9phkOU/maxresdefault.jpg)](https://youtu.be/dwjgm9phkOU)
+
 ## Features
 
 - **PDF Upload**: Upload PDF and TXT files (up to 20MB)
@@ -212,3 +218,6 @@ For issues and questions:
 - Advanced search capabilities
 - Export conversation history
 - Integration with other LLM providers
+
+## **CICD**
+![My Image](https://github.com/Durgeshsingh12712/Data-All/blob/main/pdfquery/Homepage.png)
