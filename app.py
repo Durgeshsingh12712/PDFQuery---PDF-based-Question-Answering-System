@@ -215,5 +215,9 @@ def not_found(error):
 def internal_error(error):
     return render_template('error.html', error_code=500, error_message="Internal server error"), 500
 
+@app.route('/health')
+def health_check():
+    return {'status': 'healthy'}, 200
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
